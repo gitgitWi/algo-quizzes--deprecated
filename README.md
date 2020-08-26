@@ -2,11 +2,14 @@
 
 1 day 1+ quizzes
 
-https://gist.github.com/gitgitWi/50fe670d18f9e0219c0ca8a5d9ffe5f8
+https://gist.github.com/gitgitWi/9e0c9d5aa57890dc8de4c6f88470a873.js
 
-<div>
-<script src="https://gist.github.com/gitgitWi/50fe670d18f9e0219c0ca8a5d9ffe5f8.js"></script>
-</div>
+<script src="https://gist.github.com/gitgitWi/9e0c9d5aa57890dc8de4c6f88470a873.js"></script>
+
+<br />
+<br />
+
+---
 
 ## Run on Repl.it
 
