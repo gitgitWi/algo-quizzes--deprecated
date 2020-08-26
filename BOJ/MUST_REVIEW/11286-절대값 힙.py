@@ -16,7 +16,7 @@
 # 	x = int(input())
 
 # 	if x == 0 :
-# 		if len(abs_list) == 0 : 
+# 		if len(abs_list) == 0 :
 # 			print (0)
 # 		else :
 # 			rm = abs_list.index(min(abs_list))
@@ -31,22 +31,24 @@
 `heapq` module 사용
 '''
 
+
+import sys
+import heapq as H
 import heapq
 from sys import stdin
-
 input = stdin.readline
 
 h = []
 heapq.heapify(h)
-for i in range(int(input())) :
-	n = int(input())
-	if n == 0 :
-		if len(h) == 0:
-			print (0)
-		else : 
-			print (heapq.heappop(h)[1])
-	else :
-		heapq.heappush(h, (abs(n), n))
+for i in range(int(input())):
+    n = int(input())
+    if n == 0:
+        if len(h) == 0:
+            print(0)
+        else:
+            print(heapq.heappop(h)[1])
+    else:
+        heapq.heappush(h, (abs(n), n))
 
 
 '''
@@ -54,10 +56,9 @@ Short Codings
 '''
 
 # https://www.acmicpc.net/source/6271003
-import heapq as H,sys
-h=[]
+h = []
 input()
 for s in sys.stdin:
-	x=int(s)
-	y=max(x*2,-x+~x)or H.heappop(h or[0])
-	H.heappush(h,y)if x else print(y//2^y%-2)
+    x = int(s)
+    y = max(x*2, -x+~x) or H.heappop(h or [0])
+    H.heappush(h, y)if x else print(y//2 ^ y % -2)
