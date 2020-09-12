@@ -2,6 +2,8 @@
 
 1 day 1+ quizzes
 
+[solved.ac profile](https://solved.ac/profile/ezerwi)
+
 https://gist.github.com/gitgitWi/9e0c9d5aa57890dc8de4c6f88470a873
 
 <br />
