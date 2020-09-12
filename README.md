@@ -4,8 +4,6 @@
 
 https://gist.github.com/gitgitWi/9e0c9d5aa57890dc8de4c6f88470a873
 
-<script src="https://gist.github.com/gitgitWi/9e0c9d5aa57890dc8de4c6f88470a873.js"></script>
-
 <br />
 <br />
 
