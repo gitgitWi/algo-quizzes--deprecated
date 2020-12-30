@@ -8,6 +8,7 @@
  * 두 시간 정도 고민하다가 아래 블로그 참고해서 해결..
  * https://velog.io/@sso/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4-javascript-%EC%98%A4%ED%94%88%EC%B1%84%ED%8C%85%EB%B0%A9
  *
+ * 위 블로그 해결 방식과 비슷하게 생각은 했던 것 같은데,
  * 1차로 경우의 수 만드는 게 익숙치 않아서 오래걸렸고,
  * 각 경우의 수별로 일일이 비교하는게 연산이 너무 많지 않을까하는 고민 때문에 오래 걸림
  * 제출 결과, 우려할만큼 리소스 문제는 없었고 이전 문제들에 비해 아주 조금 더 많이 나오는 정도..
@@ -54,9 +55,7 @@ const isIncludes = (current, keys) => {
 function solution(relation) {
 	const colLen = relation[0].length;
 	const rowLen = relation.length;
-
 	const keys = [];
-	let count = 0;
 
 	/**
 	 * 각 경우의 수 중 최소성 검사 통과한 경우 유일성 검사
