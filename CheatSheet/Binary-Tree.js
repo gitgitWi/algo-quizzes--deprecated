@@ -122,3 +122,15 @@ const isSymmetric = (root) => {
 
 	return true;
 };
+
+// 각 path의 총합이 구하는 합과 같은지
+// 각 path의 총합
+const hasPathSum = (node, sum) => {
+	if (!node) return false;
+
+	const { val, left, right } = node;
+	if (!left && !right) return sum === val;
+
+	let current = sum - val;
+	return hasPathSum(left, current) || hasPathSum(right, current);
+};
