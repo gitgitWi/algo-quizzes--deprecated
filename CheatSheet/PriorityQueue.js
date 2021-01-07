@@ -67,6 +67,7 @@ class PriorityQueue {
       : (() => {
           const { priority, value } = this.head;
           this.head = this.head.next;
+          this.length--;
           return [priority, value];
         })();
   }
