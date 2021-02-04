@@ -218,7 +218,15 @@
  * lv3. 합승 택시 요금
  * 출발 S => A, B 각각 도착하는데 최저 요금
  *
- * @param {number} n 지점 번호, 3~200
+ * 1차: 효율성 모두 실패
+ * - 다익스트라 최단경로 활용 (getRoute)
+ * - Start -> Stopover
+ * - Stopover -> A
+ * - Stopover -> B
+ * - stopver에 따른 최단 경로값 들 중 최소값
+ * - getRoute 함수 한번만 실행해도 효율성 절반 정도는 시간 초과
+ *
+ * @param {number} n 지점개수, 3~200
  * @param {number} s 출발지점
  * @param {number} a A 도착지점
  * @param {number} b B 도착지점
@@ -226,8 +234,114 @@
  * @returns {number} 최저 요금
  */
 const solution = (n, s, a, b, fares) => {
-	//
-	return n;
+	const graph = fares.reduce((acc, val) => {
+		const [c, d, f] = val;
+		acc[d] ? (acc[d][c] = f) : (acc[d] = { [c]: f });
+		acc[c] ? (acc[c][d] = f) : (acc[c] = { [d]: f });
+		return acc;
+	}, {});
+
+	const fees = Array(n + 1)
+		.fill(0)
+		.reduce((acc, _, idx) => {
+			acc.push(Array(n + 1).fill(Infinity));
+			acc[idx][idx] = 0;
+			return acc;
+		}, []);
+
+	const getRoute = (
+		current,
+		start,
+		dest,
+		feeAcc = 0,
+		visited = Array(n + 1).fill(false)
+	) => {
+		if (current === dest) return;
+		visited[current] = true;
+
+		if (graph[current]) {
+			Object.keys(graph[current]).forEach((nextNode) => {
+				if (visited[nextNode]) return;
+				const nextFee = feeAcc + graph[current][nextNode];
+				if (nextFee > fees[start][nextNode]) return;
+				fees[start][nextNode] = nextFee;
+				getRoute(+nextNode, start, dest, nextFee, [...visited]);
+			});
+		}
+	};
+
+	let ans = Infinity;
+	[...Array(n).keys()]
+		.map((n) => n + 1)
+		.forEach((stopover) => {
+			getRoute(s, s, stopover);
+			getRoute(stopover, stopover, a);
+			getRoute(stopover, stopover, b);
+
+			if (
+				[
+					fees[s][stopover],
+					fees[stopover][a],
+					fees[stopover][b],
+				].includes(Infinity)
+			)
+				return;
+
+			const temp =
+				fees[s][stopover] + fees[stopover][a] + fees[stopover][b];
+
+			if (temp < ans) {
+				ans = temp;
+			}
+		});
+
+	return ans;
+};
+
+/**
+ * 2차. 플로이드 워셜 알고리즘 적용
+ *
+ * 이전까지 for 쓰기 싫어서 range 함수 만들었었는데..
+ * - `const range = (n) => [...Array(n + 1).keys()];`
+ * range 함수 호출에서 시간 초과로 효율성 1개만 통과..
+ * for 로 전부 바꾸고 통과
+ *
+ * 효율성 테스트가 있는 경우에는 forEach 자체해야 할 듯
+ * */
+const solution = (n, s, a, b, fares) => {
+	const fees = Array(n + 1)
+		.fill(0)
+		.reduce((acc, _, idx) => {
+			acc.push(Array(n + 1).fill(Infinity));
+			acc[idx][idx] = 0;
+			return acc;
+		}, []);
+
+	fares.reduce((_, val) => {
+		const [c, d, f] = val;
+		fees[c][d] = f;
+		fees[d][c] = f;
+		return _;
+	}, 0);
+
+	// 플로이드 워셜 알고리즘에 따라
+	// 모든 노드간 최소 비용 산출
+	for (let k = 1; k < n + 1; k++) {
+		for (let a = 1; a < n + 1; a++) {
+			for (let b = 1; b < n + 1; b++) {
+				const temp = fees[a][k] + fees[k][b];
+				if (temp < fees[a][b]) fees[a][b] = temp;
+			}
+		}
+	}
+
+	let ans = Infinity;
+	for (let stopover = 1; stopover < n + 1; stopover++) {
+		const temp = fees[s][stopover] + fees[stopover][a] + fees[stopover][b];
+		if (temp < ans) ans = temp;
+	}
+
+	return ans;
 };
 
 [
