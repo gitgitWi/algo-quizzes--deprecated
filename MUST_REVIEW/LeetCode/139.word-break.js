@@ -34,13 +34,31 @@ const wordBreak = function (s, wordDict) {
   return false;
 };
 
+// DP
+const wordBreak = function (s, wordDict) {
+  const size = s.length;
+  const memo = Array(size + 1).fill(false);
+  memo[0] = true;
+
+  const wordSet = new Set(wordDict);
+
+  for (let start = 0; start < size; start++) {
+    if (!memo[start]) continue;
+    wordSet.forEach((word) => {
+      if (s.slice(start).indexOf(word) === 0) {
+        memo[start + word.length] = true;
+      }
+    });
+  }
+  return memo[size];
+};
+
 // BFS
 const wordBreak = function (s, wordDict) {
   const size = s.length;
   const memo = Array(size + 1).fill(false);
   memo[0] = true;
 
-  const sr = Array.from(s);
   const wordSet = new Set(wordDict);
 
   for (let end = 1; end < size + 1; end++) {
