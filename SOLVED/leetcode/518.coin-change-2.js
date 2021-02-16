@@ -6,6 +6,26 @@
 
 // @lc code=start
 /**
+ * Space O(N)
+ *
+ * @param {number} amount
+ * @param {number[]} coins
+ * @return {number}
+ */
+const change = function (amount, coins) {
+  const memo = Array(amount + 1).fill(0);
+  memo[0] = 1;
+  for (const coin of coins) {
+    for (let sum = 1; sum < amount + 1; sum++) {
+      if (coin <= sum) memo[sum] += memo[sum - coin];
+    }
+  }
+  return memo[amount];
+};
+
+/**
+ * Space O(MN)
+ *
  * @param {number} amount
  * @param {number[]} coins
  * @return {number}
