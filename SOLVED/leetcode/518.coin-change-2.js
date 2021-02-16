@@ -16,8 +16,8 @@ const change = function (amount, coins) {
   const memo = Array(amount + 1).fill(0);
   memo[0] = 1;
   for (const coin of coins) {
-    for (let sum = 1; sum < amount + 1; sum++) {
-      if (coin <= sum) memo[sum] += memo[sum - coin];
+    for (let sum = coin; sum < amount + 1; sum++) {
+      memo[sum] += memo[sum - coin];
     }
   }
   return memo[amount];
