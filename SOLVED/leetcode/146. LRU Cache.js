@@ -1,12 +1,87 @@
 /**
  * 146. LRU Cache
- * 
- * 단일 연결리스트로 좀 무식하게 풀었는데,
- * 이중 연결리스트, Map에 node 주소를 저장해서 좀더 개선해야 함
- * 
- * 복습 필요!!
- * 
+ *
+ * 노코프님 영상보고 이중 연결리스트, Node 주소 저장한 Map으로 해결한 코드
+ *
+ * runtime을 거의 절반으로 줄여서 (376ms => 184ms)
+ * 상위 92.78% 달성함
+ *
  * LRU Cache Class
+ *
+ * @param {number} capacity
+ */
+function LRUCache(capacity) {
+  this.capacity = capacity;
+  this.size = 0;
+  this.values = new Map();
+  // most recent
+  this.head = new LRUNodes("head", false);
+  // least recent
+  this.tail = new LRUNodes("tail", false);
+  this.head.next = this.tail;
+  this.tail.prev = this.head;
+}
+
+function LRUNodes(key, val, prev, next) {
+  this.key = key;
+  this.val = val;
+  this.prev = prev ? prev : null;
+  this.next = next ? next : null;
+}
+
+LRUCache.prototype.setHeadNode = function (node) {
+  if (node.prev && node.next) {
+    node.prev.next = node.next;
+    node.next.prev = node.prev;
+  }
+  node.prev = this.head;
+  node.next = this.head.next;
+  this.head.next.prev = node;
+  this.head.next = node;
+};
+
+LRUCache.prototype.removeTailNode = function () {
+  const tailNode = this.tail.prev;
+  this.values.delete(tailNode.key);
+  this.tail.prev = tailNode.prev;
+  this.tail.prev.next = this.tail;
+};
+
+/**
+ * @param {number} key
+ * @return {number}
+ */
+LRUCache.prototype.get = function (key) {
+  const node = this.values.get(key);
+  if (node === undefined) return -1;
+  this.setHeadNode(node);
+  return node.val;
+};
+
+/**
+ * @param {number} key
+ * @param {number} value
+ * @return {void}
+ */
+LRUCache.prototype.put = function (key, value) {
+  let curNode;
+  if (this.values.has(key)) {
+    curNode = this.values.get(key);
+    curNode.val = value;
+  } else {
+    this.size < this.capacity ? this.size++ : this.removeTailNode();
+    curNode = new LRUNodes(key, value);
+  }
+  this.setHeadNode(curNode);
+  this.values.set(key, curNode);
+  return;
+};
+
+/**
+ * 단일 연결리스트, 단순 key-value Map으로 해결한 코드
+ *
+ * LRU Cache Class
+ *
  * @param {number} capacity
  */
 function LRUCache(capacity) {
